@@ -1,0 +1,47 @@
+%~ \documentclass[t]{beamer}
+\documentclass[11pt]{article}
+\pagestyle{empty}
+\usepackage[paperwidth=2.5in, paperheight=1.4in,top=0in,bottom=0in,left=0in,right=0in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{pennames-pazo}
+\usepackage{ptdr-definitions}
+\usepackage[compatibility=false]{caption}
+\usepackage{subcaption}
+\usepackage{tabto}
+\include{beamerUtils}
+
+
+%% Slides 
+\begin{document}
+
+    \begin{tikzpicture}
+     \centering
+		\begin{feynman}
+			\vertex                      (i1) {\(\PQq\)};
+			\vertex [below=2.50cm of i1] (i2) {\(\overline{\PQq}\)};
+			\node   [right=1.00cm of i1] (p1);
+			\vertex [below=1.25cm of p1] (m1);
+			\vertex [right=1.60cm of m1] (n1);
+			\node   [right=0.80cm of n1] (p2); 
+			\vertex [above=0.55cm of p2] (n2); 
+			\node   [right=0.80cm of p2] (p3); 
+			\node   [right=0.90cm of p2] (p4); 
+			\node   [right=0.50cm of p2] (p5); 
+			\vertex [above=1.30cm of p3] (o1) {\(\ell^-\)}; 
+			\vertex [above=0.20cm of p4] (o2) {\(\ell^+\)}; 
+			\vertex [below=0.50cm of p3] (o3) {\(\chi\)}; 
+			\vertex [below=1.20cm of p5] (o4) {\(\overline{\chi}\)}; 
+			\node[circle,draw,thick,green,minimum size=0.5cm,pattern=north
+				east lines,pattern color=green] (C) at (n1); 
+		
+			\diagram* {
+				(i1) -- [fermion, thick] (m1) -- [fermion, thick] (i2),
+				(o2) -- [fermion, thick] (n2) -- [fermion, thick] (o1),
+				(o4) -- [fermion, thick] (C)  -- [fermion, thick] (o3),
+				(m1) -- [boson, thick, edge label=\(\Z^{\ast}/\gamma^{\ast}\)] (C),
+				(C)  -- [boson, thick, edge label=\(\Z\)] (n2),
+			};
+		\end{feynman}
+	\end{tikzpicture}
+
+\end{document}
