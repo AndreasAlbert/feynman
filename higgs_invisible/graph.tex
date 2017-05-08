@@ -1,0 +1,44 @@
+%~ \documentclass[t]{beamer}
+\documentclass[11pt]{article}
+\pagestyle{empty}
+\usepackage[paperwidth=2in, paperheight=1.4in,top=0.1in,bottom=0in,left=0in,right=0in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{pennames-pazo}
+\usepackage{ptdr-definitions}
+\usepackage[compatibility=false]{caption}
+\usepackage{subcaption}
+\usepackage{tabto}
+\include{beamerUtils}
+
+
+%% Slides 
+\begin{document}
+
+   \begin{tikzpicture}
+     \centering
+     \begin{feynman}
+       \vertex                      (i1) {\(\PQq\)};
+       \vertex [below=2.5cm of i1]  (i2) {\(\overline{\PQq}\)};
+       
+       \node   [right=1cm of i1]  (p1);
+       \vertex [below=1.25cm of p1] (m1);
+
+       
+       \vertex [right=1.4cm of m1] (n1); 
+
+       \node   [right=1cm of n1]  (p2); 
+       \vertex [above=1.25cm of p2]  (o1) {Z}; 
+       \vertex [below=1.25cm of p2]  (o2) {H}; 
+
+       \diagram* {
+         (i1) -- [fermion, thick] (m1) -- [fermion, thick] (i2),
+         
+         (m1) -- [boson, thick,edge label=Z] (n1),
+         (o2) -- [scalar, thick] (n1) -- [boson, thick] (o1),
+       };
+
+
+     \end{feynman}
+   \end{tikzpicture}
+
+\end{document}

@@ -1,0 +1,217 @@
+\usepackage{xcolor}
+\usepackage{pifont}
+\usepackage{hyperref}
+\usepackage{soul}
+%\usepackage{ifthen}
+\usepackage{datetime}
+\usepackage{outlines}
+\usepackage{zref-savepos}
+\usepackage{tikz}
+%\usepackage{tikz-feynman}
+\usepackage[compat=1.0.0]{tikz-feynman}
+%% \usetikzlibrary{external}
+%% \immediate\write18{mkdir -p pgf-img}
+%% \tikzexternalize[
+%%   prefix=pgf-img/,
+%%   system call={
+%%     lualatex \tikzexternalcheckshellescape -halt-on-error -interaction=batchmode -jobname="\image" "\texsource" || rm "\image.pdf"
+%%   },
+%% ]
+%\usepackage{feynmf}
+%\usepackage{feynmp}
+%\usepackage{feynmp-auto}
+\usetikzlibrary{arrows}
+\usetikzlibrary{calc}
+\usepackage[pscoord]{eso-pic} % The zero point of the coordinate
+                              % systemis the lower left corner of the
+                              % page (the default) 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% New data format for title page 
+\newdateformat{mydate}{\monthname[\THEMONTH] \twodigit{\THEDAY}, \THEYEAR}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% A few aliases for colors
+
+%% Colors available:
+%% black, blue, brown, cyan, darkgray, gray, green, lightgray, lime,
+%% magenta, olive, orange, pink, purple, red, teal, violet, white,
+%% yellow
+
+%% For \textcolor 
+\newcommand{\mytcol} [2]{\textcolor[RGB]{#1}{#2}}
+%
+\newcommand{\tcblack}[1]{\textcolor{black}{#1}} 
+\newcommand{\tcred}  [1]{\textcolor{red}  {#1}} 
+\newcommand{\tcblue} [1]{\textcolor{blue} {#1}} 
+\newcommand{\tcgreen}[1]{\textcolor{green}{#1}} 
+\newcommand{\tccyan} [1]{\textcolor{cyan} {#1}} 
+\newcommand{\tcdred} [1]{\textcolor[RGB]{180,   0,   0}{#1}} 
+\newcommand{\tcdblue}[1]{\textcolor[RGB]{  0,   0, 150}{#1}} 
+%%
+%% For \color 
+\newcommand{\mycol}  [1]{\color[RGB]{#1}}
+%
+\newcommand{\cblack}{\color{black}} 
+\newcommand{\cred}  {\color{red}  } 
+\newcommand{\cblue} {\color{blue} } 
+\newcommand{\cgreen}{\color{green}} 
+\newcommand{\ccyan} {\color{cyan} } 
+\newcommand{\cdred} {\color[RGB]{180,   0,   0}} 
+\newcommand{\cdblue}{\color[RGB]{  0,   0, 150}} 
+
+%% Note: to save the current color, use this sintax:
+%%  \colorlet{saved}{.}
+%%  \color{whatever you want}
+%%  \color{saved}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Colored strikethrough
+\newcommand{\stcol}[2]{
+  \newdimen\textlen
+  \settowidth{\textlen}{#2}
+  %\hspace*{-1ex}\rlap{#2}{\color{#1}\rule[0.5ex]{\textlen}{.6pt}}
+  \hspace*{0ex}\rlap{#2}{\color{#1}\rule[0.5ex]{\textlen}{.6pt}}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Underlined URL 
+\newcommand{\uhref}[2]{\href{#1}{\tcblue{\underline{#2}}}}
+\newcommand{\uhlink}[2]{\hyperlink{#1}{\tcblue{\underline{#2}}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% For basic math 
+\def\numeval#1{\the\numexpr#1\relax}
+\def\dimeval#1{\the\dimexpr#1\relax}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% My personal TAB
+\makeatletter
+% \zsaveposx is defined since 2011/12/05 v2.23 of zref-savepos
+\@ifundefined{zsaveposx}{\let\zsaveposx\zsavepos}{}
+\makeatother
+\newcounter{hposcnt}
+\renewcommand*{\thehposcnt}{hpos\number\value{hposcnt}}
+\newcommand*{\SP}{% set position
+  \stepcounter{hposcnt}%
+  \zsaveposx{\thehposcnt s}%
+  \xspace
+}
+\makeatletter
+\newcommand*{\UP}[1]{% use previous position
+  \zsaveposx{hpos#1u}%
+  \zref@refused{hpos#1s}%
+  \zref@refused{hpos#1u}%
+  \kern\zposx{hpos#1s}sp\relax
+  \kern-\zposx{hpos#1u}sp\relax
+  \xspace
+}
+\makeatother
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% My personal bullet list 
+\newcommand{\bul}   {\1[\scalebox{0.5}{\color{BlueBody}\ding{108}}]} 
+\newcommand{\sbul}  {\2[\scalebox{0.6}{\color{BlueBody}\ding{228}}]} 
+\newcommand{\ssbul} {\3[\color{BlueBody}--]} 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Fix coordinate point for later use
+%% (e.g. connect with lines, arrows) 
+\newcommand{\tikzmark}[1]{\ensuremath{\tikz[overlay,remember picture] \node (#1) {};}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% ''Floating'' text box with ''anchors'' for lines, e.g. 
+%%   \tikztext{9cm}{2.5cm}{red,rotate=-5}{tb}{\cblue\it My text\\Continues}
+\newcommand{\tikztext}[5]{
+  \tikz[overlay,remember picture] \draw (#1,#2) node[draw,#3] (#4) {#5};
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Arrow between two points (can be fixed points from
+%% \tikzmark or \tikztext, or simply coordinates. E.g. 
+%%   \tikzarrow{red,thick,out=10,in=180}{(node1)+(2pt,0.5ex)}{(node2.west)}
+\newcommand{\tikzarrow}[3]{
+  \tikz[overlay,remember picture,-latex] \draw[#1] #2 to #3;
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% ''Floating'' text boxes (but \tikztext is better!)
+%%  \placetbox{<horizontal pos>}{<vertical pos>}{<stuff>}
+\newcommand{\placetbox}[3]{
+  \setbox0=\hbox{#3} % Put <stuff> in a box
+  \AddToShipoutPictureFG*{ % Add <stuff> to current page foreground
+    \put(\LenToUnit{#1\paperwidth},\LenToUnit{#2\paperheight}){\vtop{{\null}\makebox[0pt][c]{#3}}}
+  }
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Text with shadow
+%%   \begin{tikzpicture}[remember picture,overlay]   
+%%       \textshadow{4}{0}{This is important!}
+%%   \end{tikzpicture} 
+\newcommand\textshadow[4]{
+    \node[black!30!white] at (#1em+0.3em,#2em-0.2em) {
+        \scalebox{2}{\Huge #4} 
+    };
+    \node[#3] at (#1em-0.06em,#2em+0.04em) {
+        \scalebox{2}{\Huge #4} 
+    };
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Text with blured shadow
+%%   \begin{tikzpicture}[remember picture,overlay]   
+%%       \textblur{4}{0}{This is important!}
+%%   \end{tikzpicture} 
+\newcommand\textblur[4]{
+    \newcommand\xoffset{0.3}
+    \newcommand\yoffset{0.2}
+    %% % Blur
+    %% %\foreach \x in {-0.1,0.1} {
+    %% \foreach \x in {0.10, 0.05} {
+    %%     %\foreach \y in {-0.1,0.1} {         
+    %%     %\foreach \y in {0.10, 0.05} {         
+    %%         %\node[black!20!white] at (#1em+\xoffset em+\x em,#2em-\yoffset em-\y em) {
+    %%         \node[black!20!white] at (#1em+\xoffset em+\x em,#2em-\yoffset em-\x em) {
+    %%             \scalebox{2}{\Huge #4} 
+    %%         };
+    %%     %}
+    %% }
+
+    \node[black!05!white] at (#1em+0.48em,#2em-0.32em) {
+        \scalebox{2}{\Huge #4} 
+    };
+    \node[black!10!white] at (#1em+0.42em,#2em-0.28em) {
+        \scalebox{2}{\Huge #4} 
+    };
+    \node[black!15!white] at (#1em+0.36em,#2em-0.24em) {
+        \scalebox{2}{\Huge #4} 
+    };
+    \node[black!20!white] at (#1em+0.30em,#2em-0.20em) {
+        \scalebox{2}{\Huge #4} 
+    };
+    \node[black!25!white] at (#1em+0.24em,#2em-0.16em) {
+        \scalebox{2}{\Huge #4} 
+    };
+    \node[black!30!white] at (#1em+0.18em,#2em-0.12em) {
+        \scalebox{2}{\Huge #4} 
+    };
+    \node[black!35!white] at (#1em+0.12em,#2em-0.08em) {
+        \scalebox{2}{\Huge #4} 
+    };
+    \node[black!40!white] at (#1em+0.06em,#2em-0.04em) {
+        \scalebox{2}{\Huge #4} 
+    };
+    \node[#3] at (#1em-0.06em,#2em+0.04em) {
+        \scalebox{2}{\Huge #4} 
+    };
+}
