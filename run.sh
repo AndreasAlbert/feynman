@@ -5,3 +5,7 @@ for dir in ./*/; do
 	done
 	popd;
 done
+
+for pdf in $(find -name "*.pdf");
+	do pdftops -eps "${pdf}";
+done

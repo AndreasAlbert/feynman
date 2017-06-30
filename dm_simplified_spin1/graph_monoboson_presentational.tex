@@ -31,15 +31,12 @@
        
        \vertex [above=1.3cm of p2]  (o1) {\(\chi\)}; 
        \vertex [below=0.3cm of p2]  (o2) {\(\chi\)}; 
-       \vertex [below=1.4cm of p2]  (o3) {\(f\)}; 
-       \vertex [below=2.6cm of p2]  (o4) {\(f\)}; 
 
        \diagram* {
          (i1) -- [fermion, thick] (m1) -- [fermion, thick] (m2) -- [fermion, thick] (i2),
          (o2) -- [fermion, thick] (n1) -- [fermion, thick] (o1),
-         (o4) -- [fermion, thick] (n2) -- [fermion, thick] (o3),
-         (m1) -- [boson, thick, edge label=\(\textcolor{black}{\Z'}\)] (n1),
-         (m2) -- [boson, thick, edge label=\(\Z\)] (n2),
+         (m1) -- [boson, thick, edge label=\(\textcolor{black}{\cal{A}}\)] (n1),
+         (m2) -- [boson, thick, edge label=\(Z/W/\gamma\)] (n2),
        };
 
        \draw[black,fill=black] (m1) circle (0.08cm);
@@ -47,5 +44,6 @@
 
      \end{feynman}
    \end{tikzpicture}
+
 
 \end{document}

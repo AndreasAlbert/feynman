@@ -26,20 +26,17 @@
        \node [right=1.8cm of m1] (l1); 
        \node [right=1.8cm of m2] (l2); 
        \vertex [above=0.5cm of l1,label=above:$g_\chi$] (n1); 
-       \vertex [below=0.5cm of l2]  (n2); 
+       \vertex [below=0.5cm of l2,label=right:$\gamma$]  (n2); 
        \node   [right=1.5cm of l1]  (p2);
        
        \vertex [above=1.3cm of p2]  (o1) {\(\chi\)}; 
        \vertex [below=0.3cm of p2]  (o2) {\(\chi\)}; 
-       \vertex [below=1.4cm of p2]  (o3) {\(f\)}; 
-       \vertex [below=2.6cm of p2]  (o4) {\(f\)}; 
 
        \diagram* {
          (i1) -- [fermion, thick] (m1) -- [fermion, thick] (m2) -- [fermion, thick] (i2),
          (o2) -- [fermion, thick] (n1) -- [fermion, thick] (o1),
-         (o4) -- [fermion, thick] (n2) -- [fermion, thick] (o3),
-         (m1) -- [boson, thick, edge label=\(\textcolor{black}{\Z'}\)] (n1),
-         (m2) -- [boson, thick, edge label=\(\Z\)] (n2),
+         (m1) -- [boson, thick, edge label=\(\textcolor{black}{\cal{A}}\)] (n1),
+         (m2) -- [boson, thick] (n2),
        };
 
        \draw[black,fill=black] (m1) circle (0.08cm);
@@ -47,5 +44,6 @@
 
      \end{feynman}
    \end{tikzpicture}
+
 
 \end{document}
